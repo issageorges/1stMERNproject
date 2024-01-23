@@ -38,15 +38,5 @@ export default function AddTask() {
     </form>
 </div>
 
-
-  //   <form onSubmit={handleSubmit}>
-  //   <input
-  //       type="text"
-  //       value={description}
-  //       onChange={(e) => setDescription(e.target.value)}
-  //       placeholder="Add a new task"
-  //   />
-  //   <button type="submit">Add Task</button>
-  //  </form>
   )
 }

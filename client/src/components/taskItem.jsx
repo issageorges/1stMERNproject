@@ -6,7 +6,7 @@ export default function TaskItem({task}) {
     const {deleteTask, updateTask }=useContext(TasksContext)
     const [isEditing, setIsEditing] =useState(false)
     const [editDescription, setEditDescription] = useState(task.description);
-
+    const [isCompleted, setIsCompleted] = useState(false)
     const handleDelete = async()=>{
       
          await deleteTask(task._id)
@@ -15,6 +15,10 @@ export default function TaskItem({task}) {
     const handleUpdate = async () => { 
       await updateTask(task._id, editDescription)
       setIsEditing(false)
+    }
+
+    const toggleCompleted = () =>{
+      setIsCompleted(!isCompleted)
     }
   return (
     <div className="bg-white p-3 my-2 rounded shadow-md border border-gray-300 max-w-md mx-auto">
@@ -37,7 +41,9 @@ export default function TaskItem({task}) {
             </div>
         ) : (
             <div className="flex items-center space-x-3">
-                <p className="flex-grow text-gray-700">{task.description}</p>
+                <p className={`flex-grow text-gray-700 ${isCompleted ? 'line-through' : ''} cursor-pointer`}
+                    onClick={toggleCompleted} 
+                >{task.description}</p>
                 <button onClick={() => setIsEditing(true)} className="border border-yellow-500 text-yellow-500 p-1 rounded hover:bg-yellow-500 hover:text-white">
                     <MessageSquare />
                 </button>
