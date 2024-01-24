@@ -1,26 +1,37 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { baseUrl } from '../config/api';
+import { useUserContext } from './user.context';
 
 export const TasksContext = createContext();
 
 export const TasksProvider = ({children})=>{
     const [tasks,setTasks]= useState([])
-
+    const{user }= useUserContext()
+    
+    const getTasks = async()=>{
+        try{
+            const res = await axios.get(baseUrl+"/todos")
+            setTasks(res.data)
+           
+        }catch(err){console.log(err)}
+    }
+    
     useEffect(()=>{
-        const getTasks = async()=>{
-            try{
-                const res = await axios.get(baseUrl+"/todos")
-                setTasks(res.data)
-            }catch(err){console.log(err)}
-        }
+        
         getTasks()
     },[])
 
-    const addTask = async (description)=>{
-        const res = await axios.post(`${baseUrl}/todos`, { description });
+    const addTask = async (e)=>{
+        e.preventDefault()
+        const description= e.target.description.value
+        if(!description) return alert("please add task")
+        const res = await axios.post(`${baseUrl}/todos`, { description,creator:user._id });
         setTasks([...tasks,res.data])
+        e.target.reset()
+        getTasks()
 
+       
     }
 
     const deleteTask = async(id)=>{
@@ -29,6 +40,8 @@ export const TasksProvider = ({children})=>{
             alert(res.data.message);
             const newTasks = tasks.filter((task) => task._id !== id);
             setTasks(newTasks)
+            getTasks()
+
         }catch(err){console.log(err);}
     }
  
@@ -37,6 +50,8 @@ export const TasksProvider = ({children})=>{
             const res = await axios.put(`${baseUrl}/todos/${id}`, { description: updatedDescription })
             const updatedTasks = tasks.map(task => task._id === id ? res.data : task);
             setTasks(updatedTasks)
+            getTasks()
+
         }catch(err){console.log(err)}
     }
 

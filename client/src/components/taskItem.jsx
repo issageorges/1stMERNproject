@@ -1,8 +1,10 @@
 import  { useContext, useState } from 'react';
 import { TasksContext } from '../context/tasksContext';
 import { ThumbsUp,XCircle, Trash2,MessageSquare } from "lucide-react";
+import { useUserContext } from '../context/user.context'
 
 export default function TaskItem({task}) {
+    const { user } = useUserContext()
     const {deleteTask, updateTask }=useContext(TasksContext)
     const [isEditing, setIsEditing] =useState(false)
     const [editDescription, setEditDescription] = useState(task.description);
@@ -20,7 +22,11 @@ export default function TaskItem({task}) {
     const toggleCompleted = () =>{
       setIsCompleted(!isCompleted)
     }
+
+//     console.log("Task:", task);
+// console.log("User:", user);
   return (
+    
     <div className="bg-white p-3 my-2 rounded shadow-md border border-gray-300 max-w-md mx-auto">
         {isEditing ? (
             <div className="flex flex-col items-start">
@@ -44,38 +50,32 @@ export default function TaskItem({task}) {
                 <p className={`flex-grow text-gray-700 ${isCompleted ? 'line-through' : ''} cursor-pointer`}
                     onClick={toggleCompleted} 
                 >{task.description}</p>
-                <button onClick={() => setIsEditing(true)} className="border border-yellow-500 text-yellow-500 p-1 rounded hover:bg-yellow-500 hover:text-white">
+
+
+
+                {user && user._id === task.creator._id && (
+                <div>
+                    <button onClick={() => setIsEditing(true)} className="border border-yellow-500 text-yellow-500 p-1 rounded hover:bg-yellow-500 hover:text-white">
                     <MessageSquare />
                 </button>
                 <button onClick={handleDelete} className="border border-red-500 text-red-500 p-1 rounded hover:bg-red-500 hover:text-white">
                     <Trash2 />
                 </button>
+                </div>
+                 )}
+
+                  <div>Created by: {task.creator.name}</div>
+
+
+
+                
             </div>
+
+            
+
+
         )}
+    
     </div>
-
-    // <div>
-    //    {
-    //     isEditing?(
-    //       <div>
-    //       <input
-    //          type="text"
-    //          value={editDescription}
-    //          onChange={(e) => setEditDescription(e.target.value)}
-    //       />
-    //       <button onClick={handleUpdate}>Save</button>
-    //       <button onClick={() => setIsEditing(false)}><XCircle /></button>
-
-    //       </div>
-    //     ):(
-    //       <div>
-    //           <p>{task.description}</p>
-    //           <button onClick={() => setIsEditing(true)}><MessageSquare /></button> 
-    //           <button onClick={handleDelete}><Trash2 /></button>
-    //       </div>
-    //     )
-    //    }
-
-    // </div>
   )
 }

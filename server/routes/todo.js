@@ -5,7 +5,7 @@ import Todo from "../models/Todo.js"
 const route = express.Router()
 
 route.get("/",async(req,res)=>{
-    const todos = await Todo.find()
+    const todos = await Todo.find().populate('creator');
     res.json(todos)
 })
 

@@ -6,11 +6,6 @@ export default function AddTask() {
     const [description, setDescription] = useState('');
     const {addTask} = useContext(TasksContext)
 
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
-        await addTask(description)
-        setDescription('');
-    }
 
 
 
@@ -24,11 +19,10 @@ export default function AddTask() {
 
   return (
     <div className="flex justify-center mt-10">
-    <form onSubmit={handleSubmit} className="bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 p-4 rounded shadow-lg w-1/2">
+    <form onSubmit={addTask} className="bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 p-4 rounded shadow-lg w-1/2">
         <input
             type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
             placeholder="Add a new task"
             className="w-full p-2 mb-3 border border-gray-400 rounded"
         />
