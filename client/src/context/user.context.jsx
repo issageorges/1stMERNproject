@@ -16,6 +16,7 @@ const UserProvider=({children})=>{
             name: e.target.name.value,
             email: e.target.email.value,
             password: e.target.password.value,
+            
         }
         try{
             const {data} = await axios.post(`${baseUrl}/user/register`,body)
@@ -46,7 +47,7 @@ const UserProvider=({children})=>{
     const logoutHandler= ()=>{
         localStorage.removeItem("user")
         setUser(null)
-        navigate("/login")
+        navigate("/")
     }
 
     return(
