@@ -9,6 +9,12 @@ route.get("/",async(req,res)=>{
     res.json(todos)
 })
 
+
+route.get("/:todoId",async(req,res)=>{
+    const todos = await Todo.findById(req.params.todoId).populate('creator');
+    res.json(todos)
+})
+
 route.post("/",async(req,res)=>{
     const todo = req.body 
     const newTodo = new Todo(todo)

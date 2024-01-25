@@ -8,6 +8,7 @@ import Register from './pages/register.jsx';
 import Navbar from './components/nav.jsx';
 import UserProvider from './context/user.context.jsx';
 import Home from './pages/home.jsx';
+import Todo from './pages/todo.jsx';
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
             </>} />
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/todo/:todoId" element={<Todo/>}/>
         
 
     </Routes>

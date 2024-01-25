@@ -1,7 +1,8 @@
 import  { useContext, useState } from 'react';
 import { TasksContext } from '../context/tasksContext';
-import { ThumbsUp,XCircle, Trash2,MessageSquare } from "lucide-react";
+import { ThumbsUp,XCircle, Trash2,MessageSquare ,ArrowRight} from "lucide-react";
 import { useUserContext } from '../context/user.context'
+import { useNavigate } from 'react-router-dom';
 
 export default function TaskItem({task}) {
     const { user } = useUserContext()
@@ -9,6 +10,7 @@ export default function TaskItem({task}) {
     const [isEditing, setIsEditing] =useState(false)
     const [editDescription, setEditDescription] = useState(task.description);
     const [isCompleted, setIsCompleted] = useState(false)
+    const navigate = useNavigate()
     const handleDelete = async()=>{
       
          await deleteTask(task._id)
@@ -21,6 +23,9 @@ export default function TaskItem({task}) {
 
     const toggleCompleted = () =>{
       setIsCompleted(!isCompleted)
+    }
+    const goToTodoPage = () => {
+        navigate(`/todo/${task._id}`);
     }
 
 //     console.log("Task:", task);
@@ -101,12 +106,16 @@ return (
         ) : (
             <div>
                 <div className="flex justify-between">
-                    <div className="flex flex-col">
-                        <p className={`text-gray-700 p-2 ${isCompleted ? 'line-through' : ''} cursor-pointer`}
-                            onClick={toggleCompleted} 
-                        >{task.description}</p>
-                        <span className="text-sm text-gray-500">Created by:  <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300">{task.creator.name}</span></span>
-                    </div>
+                <div className="flex flex-col">
+                <div className="flex items-center p-2 cursor-pointer" >
+                    <p onClick={toggleCompleted} className={`text-gray-700 ${isCompleted ? 'line-through' : ''}`}>
+                        {task.description}
+                    </p>
+                    <button onClick={goToTodoPage}  className="inline-flex ml-2"><ArrowRight/></button>
+                </div>
+                <span className="text-sm text-gray-500">Created by: <span className="bg-clip-text font-bold text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300">{task.creator.name}</span></span>
+                </div>
+
                     {user && user._id === task.creator._id && (
                         <div className="flex space-x-2 items-center">
                             <button onClick={() => setIsEditing(true)} className="border border-yellow-500 text-yellow-500 p-1 rounded hover:bg-yellow-500 hover:text-white">
